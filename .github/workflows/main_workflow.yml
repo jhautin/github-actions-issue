@@ -34,6 +34,6 @@ jobs:
   call-a-sub-workflow:
     needs: [calculate-something]
     if: ${{ github.event.inputs.call-sub-workflow == 'true' }}
-    uses: vectice/github-actions-issue/.github/workflows/sub_workflow.yml@main
+    uses: jhautin/github-actions-issue/.github/workflows/sub_workflow.yml@main
     with:
       something: ${{ needs.calculate-something.outputs.something }}
