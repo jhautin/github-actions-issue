@@ -16,5 +16,5 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
-          echo "::notice ::value of something: ${{ github.event.inputs.something }}"
+          echo "::notice ::value of something: ${{ inputs.something }}"
           echo "$GITHUB_CONTEXT"
