@@ -1,0 +1,39 @@
+name: Main workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      call-sub-workflow:
+        description: 'call sub workflow'
+        required: true
+        type: boolean
+        default: 'true'
+
+jobs:
+
+  calculate-something:
+    runs-on: ubuntu-latest
+    outputs:
+      something: ${{ steps.calculate-something.outputs.something }}
+    steps:
+      - name: calculate something
+        id: calculate-something
+        run: |
+          echo "::set-output name=something::a_sample_value"
+
+  display-something:
+    needs: [calculate-something ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: display parameters
+        env:
+          APPLICATION: backend
+        run: |
+          echo "::notice ::something is equal to ${{ needs.calculate-something.outputs.something }}"
+
+  call-a-sub-workflow:
+    needs: [calculate-something]
+    if: ${{ github.event.inputs.call-sub-workflow == 'true' }}
+    uses: vectice/github-actions-issue/.github/workflows/sub_workflow.yml@main
+    with:
+      something: ${{ needs.calculate-something.outputs.something }}
